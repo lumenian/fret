@@ -12,7 +12,7 @@
                 margin: 0;
                 padding: 0;
                 height: 100%;
-                background-color: #3d3d3d;
+                background-color: #578e7e;
                 font-family: Arial, sans-serif;
                 font-weight: 600;
                 box-sizing: border-box;
@@ -39,7 +39,7 @@
             }
 
             #notes div {
-                background-color: #578e7e;
+                background-color: #122c3b;
                 color: #f5ecd5;
                 display: flex;
                 justify-content: center;
@@ -55,13 +55,7 @@
         <div id="notes"></div>
 
         <script>
-            function shuffleArray(array) {
-                for (let i = array.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [array[i], array[j]] = [array[j], array[i]];
-                }
-            }
-
+            const container = document.getElementById("notes");
             const notes = [
                 "A",
                 "B",
@@ -76,19 +70,33 @@
                 ["F♯", "G♭"],
                 ["A♭", "G♯"],
             ];
-            shuffleArray(notes);
 
-            for (note of notes) {
-                let text = Array.isArray(note)
-                    ? Math.random() < 0.5
-                        ? note[0]
-                        : note[1]
-                    : note;
-
-                const div = document.createElement("div");
-                div.innerText = text;
-                document.getElementById("notes").appendChild(div);
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
             }
+
+            function update() {
+                shuffleArray(notes);
+                const newChildren = [];
+                for (note of notes) {
+                    let text = Array.isArray(note)
+                        ? Math.random() < 0.5
+                            ? note[0]
+                            : note[1]
+                        : note;
+
+                    const div = document.createElement("div");
+                    div.innerText = text;
+                    newChildren.push(div);
+                }
+                container.replaceChildren(...newChildren);
+            }
+
+            update();
+            container.addEventListener("click", update);
         </script>
     </body>
 </html>
