@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <title>fret</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style>
+            html,
+            body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                background-color: #76abae;
+                color: #eeeeee;
+                font-family: Arial, sans-serif;
+            }
+
+            #notes {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(4, 1fr);
+                gap: 16px;
+                padding: 16px;
+                height: 100vh;
+                box-sizing: border-box;
+            }
+
+            #notes div {
+                background-color: #222831;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 3rem;
+                border-radius: 12px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+                transition: transform 0.2s ease;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="notes"></div>
+
+        <script>
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            const notes = [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                ["A ♯", "B♭"],
+                ["C ♯", "D♭"],
+                ["D ♯", "E♭"],
+                ["F ♯", "G♭"],
+                ["A♭", "G ♯"],
+            ];
+            shuffleArray(notes);
+
+            for (note of notes) {
+                let text = Array.isArray(note)
+                    ? Math.random() < 0.5
+                        ? note[0]
+                        : note[1]
+                    : note;
+
+                const div = document.createElement("div");
+                div.innerText = text;
+                document.getElementById("notes").appendChild(div);
+            }
+        </script>
+    </body>
+</html>
