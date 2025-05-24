@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
     <head>
         <title>fret</title>
@@ -14,6 +15,7 @@
                 height: 100%;
                 background-color: #ffd369;
                 font-family: Arial, sans-serif;
+                font-size: 50px;
                 font-weight: 600;
                 box-sizing: border-box;
             }
@@ -44,9 +46,13 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                font-size: 3rem;
                 border-radius: 8px;
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                overflow: hidden;
+            }
+
+            .small-text {
+                font-size: 30px;
             }
         </style>
     </head>
@@ -56,7 +62,9 @@
 
         <script>
             const container = document.getElementById("notes");
-            const notes = [
+            const notes = [0, 1, 2, 3, 4, 5, 6];
+            var language = localStorage.getItem("lang") ?? "en";
+            const en = [
                 "A",
                 "B",
                 "C",
@@ -64,11 +72,35 @@
                 "E",
                 "F",
                 "G",
-                ["A♯", "B♭"],
-                ["C♯", "D♭"],
-                ["D♯", "E♭"],
-                ["F♯", "G♭"],
-                ["A♭", "G♯"],
+                "A♯",
+                "B♭",
+                "C#",
+                "D♭",
+                "D♯",
+                "E♭",
+                "F♯",
+                "G♭",
+                "G♯",
+                "A♭",
+            ];
+            const ru = [
+                "Ля",
+                "Си",
+                "До",
+                "Ре",
+                "Ми",
+                "Фа",
+                "Соль",
+                "Ля♯",
+                "Си♭",
+                "До#",
+                "Ре♭",
+                "Ре♯",
+                "Ми♭",
+                "Фа♯",
+                "Соль♭",
+                "Соль♯",
+                "Ля♭",
             ];
 
             function shuffleArray(array) {
@@ -78,25 +110,36 @@
                 }
             }
 
-            function update() {
+            function randomize() {
+                for (var i = 0; i < 5; i++) {
+                    const baseIdx = 7 + i * 2;
+                    const note = Math.random() < 0.5 ? baseIdx : baseIdx + 1;
+                    notes.push(note);
+                }
                 shuffleArray(notes);
+            }
+
+            function render() {
                 const newChildren = [];
                 for (note of notes) {
-                    let text = Array.isArray(note)
-                        ? Math.random() < 0.5
-                            ? note[0]
-                            : note[1]
-                        : note;
-
+                    let src = language === "ru" ? ru : en;
                     const div = document.createElement("div");
-                    div.innerText = text;
+                    div.innerText = src[note];
                     newChildren.push(div);
                 }
                 container.replaceChildren(...newChildren);
+                container.classList.toggle("small-text", language === "ru");
             }
 
-            update();
-            container.addEventListener("click", update);
+            function changeLanguage() {
+                language = language === "en" ? "ru" : "en";
+                localStorage.setItem("lang", language);
+                render();
+            }
+
+            randomize();
+            render();
+            container.addEventListener("click", changeLanguage);
         </script>
     </body>
 </html>
